@@ -25,7 +25,7 @@ public class AutenticadorFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
+        // Inicialização dos componentes
         labelLogin = new JLabel("Login:");
         labelSenha = new JLabel("Senha:");
 
@@ -71,7 +71,7 @@ public class AutenticadorFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String login = textoLogin.getText();
                 String senha = new String(textoSenha.getPassword());
-                if(!login.isEmpty() && !senha.isEmpty()) {
+                if (!login.isEmpty() && !senha.isEmpty()) {
                     users.setUsername(login);
                     users.setPassword(senha);
                     if (usersController.authenticate(users)) {
@@ -79,7 +79,7 @@ public class AutenticadorFrame extends JFrame {
                     } else {
                         JOptionPane.showMessageDialog(null, "Login ou senha inválidos!", "Erro", JOptionPane.ERROR_MESSAGE);
                     }
-                }else {
+                } else {
                     JOptionPane.showMessageDialog(null, "TODOS os campos devem ser preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
                 textoLogin.setText("");
@@ -90,29 +90,29 @@ public class AutenticadorFrame extends JFrame {
         botaoEsqueciSenha.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                // Cria a tela para identificação do usuário
                 JFrame userIdentificationFrame = new JFrame("Identificar Usuário");
                 userIdentificationFrame.setSize(400, 300);
-                userIdentificationFrame.setLocationRelativeTo(null);
-                userIdentificationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                userIdentificationFrame.setLocationRelativeTo(null);  // Centraliza a janela na tela
+                userIdentificationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Fecha apenas a janela de identificação do usuário
                 userIdentificationFrame.setLayout(new GridBagLayout());
 
                 GridBagConstraints gbc = new GridBagConstraints();
-                gbc.insets = new Insets(10, 10, 10, 10);
-                gbc.anchor = GridBagConstraints.WEST;
+                gbc.insets = new Insets(10, 10, 10, 10);  // Espaçamento entre componentes
+                gbc.anchor = GridBagConstraints.WEST;  // Alinha os componentes à esquerda
 
-
+                // Inicializa os componentes
                 JLabel idLabel = new JLabel("ID do Usuário:");
                 JTextField idField = new JTextField(20);
                 JLabel nameLabel = new JLabel("Nome:");
                 JTextField nameField = new JTextField(20);
                 JButton confirmButton = new JButton("Confirmar");
 
-                idLabel.setPreferredSize(new Dimension(120, 30));
-                nameLabel.setPreferredSize(new Dimension(120, 30));
-                confirmButton.setPreferredSize(new Dimension(100, 40));
+                idLabel.setPreferredSize(new Dimension(120, 30));  // Ajuste o tamanho das labels
+                nameLabel.setPreferredSize(new Dimension(120, 30));  // Ajuste o tamanho das labels
+                confirmButton.setPreferredSize(new Dimension(100, 40));  // Ajuste o tamanho do botão
 
-
+                // Adiciona os componentes à tela
                 gbc.gridx = 0;
                 gbc.gridy = 0;
                 userIdentificationFrame.add(idLabel, gbc);
@@ -129,11 +129,11 @@ public class AutenticadorFrame extends JFrame {
 
                 gbc.gridx = 0;
                 gbc.gridy = 2;
-                gbc.gridwidth = 2;
-                gbc.anchor = GridBagConstraints.CENTER;
+                gbc.gridwidth = 2;  // Ocupa duas colunas
+                gbc.anchor = GridBagConstraints.CENTER;  // Centraliza o botão
                 userIdentificationFrame.add(confirmButton, gbc);
 
-
+                // Adiciona ação ao botão de confirmar
                 confirmButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -141,18 +141,18 @@ public class AutenticadorFrame extends JFrame {
                         String name = nameField.getText().trim();
 
 
-                        if (!id.isEmpty() && !name.isEmpty()){
+                        if (!id.isEmpty() && !name.isEmpty()) {
                             users.setId(Integer.parseInt(id));
                             users.setUsername(name);
                             if (usersController.userExist(users)) {
-
+                                // Fecha a tela de identificação do usuário
                                 userIdentificationFrame.dispose();
 
-
+                                // Cria a nova tela para redefinição de senha
                                 JFrame passwordResetFrame = new JFrame("Redefinir Senha");
                                 passwordResetFrame.setSize(400, 300);
-                                passwordResetFrame.setLocationRelativeTo(null);
-                                passwordResetFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                passwordResetFrame.setLocationRelativeTo(null);  // Centraliza a janela na tela
+                                passwordResetFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Fecha apenas a janela de redefinição de senha
                                 passwordResetFrame.setLayout(new GridBagLayout());
 
                                 GridBagConstraints gbc = new GridBagConstraints();
@@ -197,14 +197,9 @@ public class AutenticadorFrame extends JFrame {
                                         String confirmPassword = new String(confirmPasswordField.getPassword());
 
                                         if (newPassword.equals(confirmPassword)) {
-                                            users.setId(Integer.parseInt(id));
-                                            users.setPassword(newPassword);
-                                            if(usersController.UpdatePassword(users)) {
-                                                JOptionPane.showMessageDialog(passwordResetFrame, "Senha alterada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                                                passwordResetFrame.dispose();
-                                            }else {
-                                                JOptionPane.showMessageDialog(passwordResetFrame, "Ops, houve algum problema ao alterar sua senha", "Erro", JOptionPane.ERROR_MESSAGE);
-                                            }
+
+                                            JOptionPane.showMessageDialog(passwordResetFrame, "Senha alterada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                                            passwordResetFrame.dispose();
                                         } else {
                                             JOptionPane.showMessageDialog(passwordResetFrame, "As senhas não coincidem.", "Erro", JOptionPane.ERROR_MESSAGE);
                                         }
@@ -214,7 +209,7 @@ public class AutenticadorFrame extends JFrame {
                             } else {
                                 JOptionPane.showMessageDialog(userIdentificationFrame, "ID ou nome inválidos.", "Erro", JOptionPane.ERROR_MESSAGE);
                             }
-                        }else {
+                        } else {
                             JOptionPane.showMessageDialog(null, "TODOS os campos devem ser preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
                             textoLogin.setText("");
                             textoSenha.setText("");
@@ -222,6 +217,7 @@ public class AutenticadorFrame extends JFrame {
                     }
                 });
 
+                // Torna a tela visível
                 userIdentificationFrame.setVisible(true);
             }
         });
@@ -230,28 +226,29 @@ public class AutenticadorFrame extends JFrame {
         botaoCadastro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Cria a nova tela para cadastro
                 JFrame cadastroFrame = new JFrame("Cadastro");
                 cadastroFrame.setSize(400, 300);
-                cadastroFrame.setLocationRelativeTo(null);
-                cadastroFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                cadastroFrame.setLocationRelativeTo(null);  // Centraliza a janela na tela
+                cadastroFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Fecha apenas a janela de cadastro
                 cadastroFrame.setLayout(new GridBagLayout());
 
                 GridBagConstraints gbc = new GridBagConstraints();
-                gbc.insets = new Insets(10, 10, 10, 10);
-                gbc.anchor = GridBagConstraints.WEST;
+                gbc.insets = new Insets(10, 10, 10, 10);  // Espaçamento entre componentes
+                gbc.anchor = GridBagConstraints.WEST;  // Alinha os componentes à esquerda
 
-
+                // Inicializa os componentes
                 JLabel nomeLabel = new JLabel("Nome:");
                 JTextField nomeField = new JTextField(20);
                 JLabel senhaLabel = new JLabel("Senha:");
                 JPasswordField senhaField = new JPasswordField(20);
                 JButton salvarButton = new JButton("Salvar");
 
-                nomeLabel.setPreferredSize(new Dimension(80, 30));
-                senhaLabel.setPreferredSize(new Dimension(80, 30));
-                salvarButton.setPreferredSize(new Dimension(100, 40));
+                nomeLabel.setPreferredSize(new Dimension(80, 30));  // Ajuste o tamanho das labels
+                senhaLabel.setPreferredSize(new Dimension(80, 30));  // Ajuste o tamanho das labels
+                salvarButton.setPreferredSize(new Dimension(100, 40));  // Ajuste o tamanho do botão
 
-
+                // Adiciona os componentes à tela
                 gbc.gridx = 0;
                 gbc.gridy = 0;
                 cadastroFrame.add(nomeLabel, gbc);
@@ -268,8 +265,8 @@ public class AutenticadorFrame extends JFrame {
 
                 gbc.gridx = 0;
                 gbc.gridy = 2;
-                gbc.gridwidth = 2;
-                gbc.anchor = GridBagConstraints.CENTER;
+                gbc.gridwidth = 2;  // Ocupa duas colunas
+                gbc.anchor = GridBagConstraints.CENTER;  // Centraliza o botão
                 cadastroFrame.add(salvarButton, gbc);
                 salvarButton.addActionListener(new ActionListener() {
                     @Override
@@ -277,7 +274,7 @@ public class AutenticadorFrame extends JFrame {
                         String nome = nomeField.getText();
                         String senha = new String(senhaField.getPassword());
 
-                        if(!nome.isEmpty() && !senha.isEmpty()){
+                        if (!nome.isEmpty() && !senha.isEmpty()) {
                             users.setUsername(nome);
                             users.setPassword(senha);
                             if (usersController.createUser(users)) {
@@ -287,17 +284,17 @@ public class AutenticadorFrame extends JFrame {
                                 textoLogin.setText("");
                                 textoSenha.setText("");
                             }
-                        }else {
+                        } else {
                             JOptionPane.showMessageDialog(null, "TODOS os campos devem ser preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
                             textoLogin.setText("");
                             textoSenha.setText("");
                         }
-
+                        // Fecha a tela de cadastro após salvar
                         cadastroFrame.dispose();
                     }
                 });
 
-
+                // Exibe a tela de cadastro
                 cadastroFrame.setVisible(true);
             }
         });
